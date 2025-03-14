@@ -4,6 +4,8 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Data;
+using Windows.Win32.UI.Shell.Common;
+using Windows.Win32.Graphics.Gdi;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
@@ -32,6 +34,7 @@ using Windows.UI.Input;
 using Windows.Devices.Input;
 using CommunityToolkit.WinUI.Helpers;
 using Clippy.Controls;
+
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
 
@@ -87,14 +90,13 @@ namespace Clippy
 
         private double GetScale()
         {
-            var progmanWindow = NativeHelper.FindWindow("Shell_TrayWnd", null);
-            var monitor = NativeHelper.MonitorFromWindow(progmanWindow, NativeHelper.MONITOR_DEFAULTTOPRIMARY);
+            var progmanWindow = PInvoke.FindWindow("Shell_TrayWnd", null);
+            var monitor = PInvoke.MonitorFromWindow(progmanWindow, MONITOR_FROM_FLAGS.MONITOR_DEFAULTTOPRIMARY);
 
-            NativeHelper.DeviceScaleFactor scale;
-            NativeHelper.GetScaleFactorForMonitor(monitor, out scale);
-
-            if (scale == NativeHelper.DeviceScaleFactor.DEVICE_SCALE_FACTOR_INVALID)
-                scale = NativeHelper.DeviceScaleFactor.SCALE_100_PERCENT;
+            DEVICE_SCALE_FACTOR scale;
+            PInvoke.GetScaleFactorForMonitor(monitor, out scale);
+            if (scale == DEVICE_SCALE_FACTOR.DEVICE_SCALE_FACTOR_INVALID)
+                scale = DEVICE_SCALE_FACTOR.SCALE_100_PERCENT;
 
             return Convert.ToDouble(scale) / 100;
         }
@@ -137,8 +139,8 @@ namespace Clippy
             this.MoveAndResize(DisplayWidth - W, DisplayHeight - H, this.Width, this.Height);
         }
 
-       // private void Background_PointerPressed(object sender, PointerRoutedEventArgs e) => //ClippyInputHelper.PointerPress(this.GetWindowHandle());
+        // private void Background_PointerPressed(object sender, PointerRoutedEventArgs e) => //ClippyInputHelper.PointerPress(this.GetWindowHandle());
 
-    //    private void Background_PointerMoved(object sender, PointerRoutedEventArgs e) => //ClippyInputHelper.PointerHover(this.GetWindowHandle());
+        //    private void Background_PointerMoved(object sender, PointerRoutedEventArgs e) => //ClippyInputHelper.PointerHover(this.GetWindowHandle());
     }
 }

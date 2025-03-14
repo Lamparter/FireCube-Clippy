@@ -1,6 +1,6 @@
 ﻿using Clippy.Core.Services;
 using Clippy.Services;
-using CubeKit.UI.Icons;
+using Riverside.Toolkit.Icons;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -21,6 +21,7 @@ using Windows.Foundation.Collections;
 using Windows.System;
 using OpenAI.ObjectModels.RequestModels;
 using OpenAI.ObjectModels;
+using Riverside.Extensions.Accountability;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.

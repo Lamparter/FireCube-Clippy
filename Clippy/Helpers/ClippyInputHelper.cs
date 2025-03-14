@@ -4,14 +4,18 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Drawing;
+using Windows.Win32.Foundation;
 using System.Reflection.Metadata;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Core;
+using Windows.Win32.UI.WindowsAndMessaging;
 using WinUIEx;
 using static Riverside.Toolkit.Helpers.NativeHelper;
 using static WindowsInput.Native.SystemMetrics;
+using Windows.Win32;
 
 namespace Clippy.Helpers
 {
@@ -33,28 +37,28 @@ namespace Clippy.Helpers
         public static void PointerHover(IntPtr WindowToIgnore)
         {
             return;
-                NativeHelper.GetCursorPos(out Point point);
+                PInvoke.GetCursorPos(out Point point);
 
                 // Perform hit testing to determine the target
                 IntPtr hWnd = GetWindowHandleAtPoint(point, WindowToIgnore);
 
                 // Forward the pointer event to the target window
-                NativeHelper.SendMessage(hWnd, NativeHelper.WM_MOUSEMOVE, (IntPtr)point.X, (IntPtr)point.Y);
+                PInvoke.SendMessage((HWND)hWnd, NativeHelper.WM_MOUSEMOVE, (nuint)point.X, (nint)point.Y);
         }
 
 
         public static IntPtr GetWindowHandleAtPoint(Point point, IntPtr WindowToIgnore)
         {
-            IntPtr hWnd = WindowFromPoint(point);
+            IntPtr hWnd = PInvoke.WindowFromPoint(point);
 
                 while (hWnd != IntPtr.Zero && hWnd != WindowToIgnore)
                 {
                     RECT rect;
-                    GetWindowRect(hWnd, out rect);
-                    if (rect.Left <= point.X && rect.Top <= point.Y && rect.Right >= point.X && rect.Bottom >= point.Y)
+                    PInvoke.GetWindowRect((HWND)hWnd, out rect);
+                    if (rect.left <= point.X && rect.top <= point.Y && rect.right >= point.X && rect.bottom >= point.Y)
                     {
                         // Check if there is a child window at the point
-                        IntPtr childHwnd = ChildWindowFromPointEx(hWnd, point, GW_CHILD);
+                        IntPtr childHwnd = PInvoke.ChildWindowFromPointEx((HWND)hWnd, point, (CWP_FLAGS)GW_CHILD);
                         if (childHwnd != IntPtr.Zero)
                             hWnd = childHwnd;
                         else
@@ -62,7 +66,7 @@ namespace Clippy.Helpers
                     }
                     else
                     {
-                        hWnd = GetWindow(hWnd, GW_HWNDNEXT);
+                        hWnd = PInvoke.GetWindow((HWND)hWnd, GET_WINDOW_CMD.GW_HWNDNEXT);
                     }
                 }
 
