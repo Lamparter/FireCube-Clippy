@@ -1,4 +1,4 @@
-﻿using CubeKit.UI.Helpers;
+﻿using Riverside.Toolkit.Helpers;
 using Microsoft.UI.Xaml.Input;
 using System;
 using System.Collections.Generic;
@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Core;
 using WinUIEx;
-using static CubeKit.UI.Helpers.NativeHelper;
+using static Riverside.Toolkit.Helpers.NativeHelper;
 using static WindowsInput.Native.SystemMetrics;
 
 namespace Clippy.Helpers
